@@ -2,6 +2,7 @@ package com.github.rag.tutorials.smart.context;
 
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.parser.TextDocumentParser;
+import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
 import lombok.extern.slf4j.Slf4j;
 
 import java.net.URISyntaxException;
@@ -19,7 +20,7 @@ public class SmartContextApplication {
     public static void main(String[] args) {
         try {
             final SmartContextManager manager = new SmartContextManager();
-            Document document = loadDocument(toPath("docs/commedia.txt"), new TextDocumentParser());
+            Document document = loadDocument(toPath("docs/91P6LXArGaS.pdf"), new ApachePdfBoxDocumentParser());
             manager.ingestDocument(document);
             startConversationWith(manager.createAssistant());
         } catch (Exception e) {

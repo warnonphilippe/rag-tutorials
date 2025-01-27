@@ -24,16 +24,31 @@
             <artifactId>langchain4j</artifactId>
             <version>${langchain4j.version}</version>
         </dependency>
-
+        <dependency>
+            <groupId>dev.langchain4j</groupId>
+            <artifactId>langchain4j-document-parser-apache-pdfbox</artifactId>
+            <version>${langchain4j.version}</version>
+        </dependency>
+        
         <dependency>
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-embeddings-bge-small-en-v15-q</artifactId>
             <version>${langchain4j.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>ai.djl</groupId>
+                    <artifactId>api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>ai.djl.huggingface</groupId>
+                    <artifactId>tokenizers</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
 
         <dependency>
             <groupId>dev.langchain4j</groupId>
-            <artifactId>langchain4j-open-ai</artifactId>
+            <artifactId>langchain4j-anthropic</artifactId>
             <version>${langchain4j.version}</version>
         </dependency>
 
@@ -42,6 +57,19 @@
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-cohere</artifactId>
             <version>${langchain4j.version}</version>
+        </dependency>
+
+        <!-- Mac CPU Intel DJL dependencies -->
+        <dependency>
+            <groupId>ai.djl.huggingface</groupId>
+            <artifactId>tokenizers</artifactId>
+            <version>0.28.0</version>
+        </dependency>
+        
+        <dependency>
+            <groupId>ai.djl</groupId>
+            <artifactId>api</artifactId>
+            <version>0.28.0</version>
         </dependency>
 
         <dependency>
