@@ -1,7 +1,6 @@
 package com.github.rag.tutorials.smart.context;
 
 import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.document.parser.TextDocumentParser;
 import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
 import lombok.extern.slf4j.Slf4j;
 
@@ -16,7 +15,6 @@ import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.load
 @Slf4j
 public class SmartContextApplication {
 
-
     public static void main(String[] args) {
         try {
             final SmartContextManager manager = new SmartContextManager();
@@ -24,10 +22,10 @@ public class SmartContextApplication {
             manager.ingestDocument(document);
             startConversationWith(manager.createAssistant());
         } catch (Exception e) {
-            log.error("Errore durante l'esecuzione dell'applicazione", e);
+            log.error("Error during application execution", e);
         }
     }
-    
+
     public static void startConversationWith(Assistant assistant) {
         try (Scanner scanner = new Scanner(System.in)) {
             while (true) {

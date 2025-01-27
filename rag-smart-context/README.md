@@ -15,7 +15,7 @@ Before starting this tutorial, you need to have the following prerequisites:
 - Maven 3.6.3 or higher
 - Basic knowledge of Java
 - Basic knowledge of LangChain4j
-- OpenAI API Key for the GPT-3.5 Turbo and GPT-4 model
+- Anthropic API Key for Claude Sonnet 3.5 and Haiku models
 - Cohere API Key (To register and get a free API key for Cohere, please visit the following link https://dashboard.cohere.com/welcome/register)
 
 ## Building the project
