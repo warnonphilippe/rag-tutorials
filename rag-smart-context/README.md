@@ -1,5 +1,7 @@
 # Smart Context Management
 This tutorial shows how to build a **Smart Context** using the RAG System.
+Link a post on [Medium.com](https://medium.com/@giuseppetrisciuoglio/advanced-strategies-to-optimize-large-language-model-costs-351c6777afbc) 
+
 ## Introduction
 Smart Context Management is a key feature of the RAG System. 
 It allows to manage the context of the user in a smart way. 
@@ -34,6 +36,5 @@ java -jar target/rag-smart-context-1.0-SNAPSHOT.jar
 
 ## Environment Configuration
 The Smart Context Management system requires the following environment variables:
-- `RAG_SMART_CONTEXT_DB_URL`: the URL of the database
-- `RAG_SMART_CONTEXT_DB_USER`: the username of the database
-- 
+- `COHERE_API_KEY`: the API key for Cohere
+- `CLAUDE_API_KEY`: the API key for Claude Sonnet 3.5 model

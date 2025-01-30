@@ -10,6 +10,7 @@
     <packaging>pom</packaging>
     <modules>
         <module>rag-smart-context</module>
+        <module>rag-with-deepseek-ollama</module>
     </modules>
 
 
