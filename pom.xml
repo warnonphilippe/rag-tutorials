@@ -11,6 +11,7 @@
     <modules>
         <module>rag-smart-context</module>
         <module>rag-with-deepseek-ollama</module>
+        <module>chatbot-hair-booking-system</module>
     </modules>
 
 

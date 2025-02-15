@@ -6,7 +6,8 @@ The tutorials are written in Java and LangChain4j.
 
 ## Tutorials
 - [Tutorial 1: Smart Context](./rag-smart-context/README.md)
-- [Tutorial 2: Rag with DeepSeek R1 and Ollam](./rag-with-deepseek-ollama/README.md)
+- [Tutorial 2: Rag with DeepSeek R1 and Ollama](./rag-with-deepseek-ollama/README.md)
+- [Tutorial 3: ChatBot for Booking Appointments](./chatbot-hair-booking-system/README.md)
 
 ## License
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -1,5 +1,6 @@
 # Rag with DeepSeek and Ollama
 This is a sample RAG System with DeepSeek and Ollama. 
+[Link a tutorial on medium.](https://medium.com/@giuseppetrisciuoglio/building-rag-systems-a-complete-guide-to-langchain4j-and-deepseek-r1-e5212aefb8d4)
 
 ## Prerequisites
 Before starting this tutorial, you need to have the following prerequisites:
