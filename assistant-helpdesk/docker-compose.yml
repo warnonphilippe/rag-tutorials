@@ -1,0 +1,14 @@
+services:
+  greenmail:
+    image: greenmail/standalone:latest
+    container_name: greenmail
+    ports:
+      - "8081:8080"
+      - "3025:3025"
+      - "3143:3143"
+      - "3993:3993"
+      - "3465:3465"
+    environment:
+      - GREENMAIL_PASSWORD=secret
+      - GREENMAIL_USERS=testuser:testpassword
+    restart: always
