@@ -11,20 +11,20 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 @RequiredArgsConstructor
-public class ResponsePayload {
+public class ResponseMessagePayload {
 
     private final String id;
     private final String responseText;
-    private final MessagePayload originalMessage;
-    private final String responseChannel;
+    private final RequestMessagePayload originalMessage;
+    private final Channel responseChannel;
     private final LocalDateTime timestamp;
     private final boolean requiresHumanReview;
     private final boolean ticketCreated;
     private final String ticketId;
 
-    public static ResponsePayload createSimple(String responseText,
-                                               MessagePayload originalMessage) {
-        return ResponsePayload.builder()
+    public static ResponseMessagePayload createSimple(String responseText,
+                                                      RequestMessagePayload originalMessage) {
+        return ResponseMessagePayload.builder()
                 .id(java.util.UUID.randomUUID().toString())
                 .responseText(responseText)
                 .originalMessage(originalMessage)
@@ -35,9 +35,9 @@ public class ResponsePayload {
                 .build();
     }
 
-    public static ResponsePayload createRequiringReview(String responseText,
-                                                        MessagePayload originalMessage) {
-        return ResponsePayload.builder()
+    public static ResponseMessagePayload createRequiringReview(String responseText,
+                                                               RequestMessagePayload originalMessage) {
+        return ResponseMessagePayload.builder()
                 .id(java.util.UUID.randomUUID().toString())
                 .responseText(responseText)
                 .originalMessage(originalMessage)
@@ -48,10 +48,10 @@ public class ResponsePayload {
                 .build();
     }
 
-    public static ResponsePayload createWithTicket(String responseText,
-                                                   MessagePayload originalMessage,
-                                                   String ticketId) {
-        return ResponsePayload.builder()
+    public static ResponseMessagePayload createWithTicket(String responseText,
+                                                          RequestMessagePayload originalMessage,
+                                                          String ticketId) {
+        return ResponseMessagePayload.builder()
                 .id(java.util.UUID.randomUUID().toString())
                 .responseText(responseText)
                 .originalMessage(originalMessage)

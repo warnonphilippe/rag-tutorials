@@ -1,8 +1,8 @@
 package com.github.rag.tutorials.helpdesk.application.email;
 
 import com.github.rag.tutorials.helpdesk.domain.conversation.ConversationService;
-import com.github.rag.tutorials.helpdesk.domain.conversation.model.MessagePayload;
-import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponsePayload;
+import com.github.rag.tutorials.helpdesk.domain.conversation.model.RequestMessagePayload;
+import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponseMessagePayload;
 import com.github.rag.tutorials.helpdesk.infrastructure.adapter.email.EmailChannelAdapter;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
@@ -51,8 +51,8 @@ class EmailInputProcessorTest {
 
     @Test
     void processEmailSuccessfully() {
-        MessagePayload adaptedMessage = MessagePayload.builder().id("1").text("text").build();
-        ResponsePayload processedMessage = ResponsePayload.builder().id("1").responseText("response").build();
+        RequestMessagePayload adaptedMessage = RequestMessagePayload.builder().id("1").text("text").build();
+        ResponseMessagePayload processedMessage = ResponseMessagePayload.builder().id("1").responseText("response").build();
 
         when(exchange.getMessage()).thenReturn(camelMessage);
         when(camelMessage.getBody(MailMessage.class)).thenReturn(mailMessage);
@@ -84,7 +84,7 @@ class EmailInputProcessorTest {
 
     @Test
     void processEmailWithProcessingFailure() {
-        MessagePayload adaptedMessage = MessagePayload.builder().id("1").text("text").build();
+        RequestMessagePayload adaptedMessage = RequestMessagePayload.builder().id("1").text("text").build();
         when(exchange.getMessage()).thenReturn(camelMessage);
         when(camelMessage.getBody(MailMessage.class)).thenReturn(mailMessage);
         when(mailMessage.getMessage()).thenReturn(mimeMessage);
@@ -100,8 +100,8 @@ class EmailInputProcessorTest {
 
     @Test
     void processEmailWithResponseFailure() {
-        MessagePayload adaptedMessage = MessagePayload.builder().id("1").text("text").build();
-        ResponsePayload processedMessage = ResponsePayload.builder().id("1").responseText("response").build();
+        RequestMessagePayload adaptedMessage = RequestMessagePayload.builder().id("1").text("text").build();
+        ResponseMessagePayload processedMessage = ResponseMessagePayload.builder().id("1").responseText("response").build();
         when(exchange.getMessage()).thenReturn(camelMessage);
         when(camelMessage.getBody(MailMessage.class)).thenReturn(mailMessage);
         when(mailMessage.getMessage()).thenReturn(mimeMessage);

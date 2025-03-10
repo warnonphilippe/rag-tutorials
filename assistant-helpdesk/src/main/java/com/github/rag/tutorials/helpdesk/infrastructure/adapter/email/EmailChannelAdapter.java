@@ -1,8 +1,9 @@
 package com.github.rag.tutorials.helpdesk.infrastructure.adapter.email;
 
 
-import com.github.rag.tutorials.helpdesk.domain.conversation.model.MessagePayload;
-import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponsePayload;
+import com.github.rag.tutorials.helpdesk.domain.conversation.model.Channel;
+import com.github.rag.tutorials.helpdesk.domain.conversation.model.RequestMessagePayload;
+import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponseMessagePayload;
 import com.github.rag.tutorials.helpdesk.infrastructure.adapter.ChannelAdapter;
 import jakarta.activation.DataSource;
 import jakarta.mail.Address;
@@ -28,11 +29,10 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class EmailChannelAdapter implements ChannelAdapter<MimeMessage> {
 
-    private static final String CHANNEL_NAME = "email";
     private final ProducerTemplate producerTemplate;
 
     @Override
-    public Mono<MessagePayload> adapt(MimeMessage rawMessage) {
+    public Mono<RequestMessagePayload> adapt(MimeMessage rawMessage) {
         return Mono.fromCallable(() -> {
             try {
                 MimeMessageParser parser = new MimeMessageParser(rawMessage);
@@ -57,11 +57,10 @@ public class EmailChannelAdapter implements ChannelAdapter<MimeMessage> {
                     metadata.put("attachmentCount", parser.getAttachmentList().size());
                 }
 
-                return MessagePayload.createWithEmail(
+                return RequestMessagePayload.createWithEmail(
                         content,
                         senderId,
                         senderId,
-                        CHANNEL_NAME,
                         parser.getSubject(),
                         recipientId,
                         metadata,
@@ -95,7 +94,7 @@ public class EmailChannelAdapter implements ChannelAdapter<MimeMessage> {
     }
 
     @Override
-    public Mono<Void> sendResponse(ResponsePayload responsePayload) {
+    public Mono<Void> sendResponse(ResponseMessagePayload responsePayload) {
         return Mono.fromRunnable(() -> {
                     producerTemplate.sendBody(
                             "direct:sendEmail",
@@ -105,8 +104,8 @@ public class EmailChannelAdapter implements ChannelAdapter<MimeMessage> {
     }
 
     @Override
-    public String getChannelName() {
-        return CHANNEL_NAME;
+    public Channel getChannelName() {
+        return Channel.EMAIL;
     }
 
     private String extractTextFromHtml(String html) {

@@ -1,7 +1,7 @@
 package com.github.rag.tutorials.helpdesk.infrastructure.adapter.email;
 
-import com.github.rag.tutorials.helpdesk.domain.conversation.model.MessagePayload;
-import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponsePayload;
+import com.github.rag.tutorials.helpdesk.domain.conversation.model.RequestMessagePayload;
+import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponseMessagePayload;
 import jakarta.mail.internet.InternetAddress;
 import jakarta.mail.internet.MimeMessage;
 import org.apache.camel.ProducerTemplate;
@@ -51,7 +51,7 @@ class EmailChannelAdapterTest {
         realMessage.saveChanges();
 
         // Use the real message in our test
-        Mono<MessagePayload> result = emailChannelAdapter.adapt(realMessage);
+        Mono<RequestMessagePayload> result = emailChannelAdapter.adapt(realMessage);
 
         StepVerifier.create(result)
                 .expectNextMatches(payload ->
@@ -109,7 +109,7 @@ class EmailChannelAdapterTest {
         realMessage.saveChanges();
 
         // Use the real message in our test
-        Mono<MessagePayload> result = emailChannelAdapter.adapt(realMessage);
+        Mono<RequestMessagePayload> result = emailChannelAdapter.adapt(realMessage);
 
         StepVerifier.create(result)
                 .expectNextMatches(payload ->
@@ -129,7 +129,7 @@ class EmailChannelAdapterTest {
     void adaptEmailWithParsingError() throws Exception {
         when(mimeMessageParser.parse()).thenThrow(new RuntimeException("Parsing error"));
 
-        Mono<MessagePayload> result = emailChannelAdapter.adapt(mimeMessage);
+        Mono<RequestMessagePayload> result = emailChannelAdapter.adapt(mimeMessage);
 
         StepVerifier.create(result)
                 .expectErrorMatches(throwable -> throwable instanceof RuntimeException &&
@@ -139,7 +139,7 @@ class EmailChannelAdapterTest {
 
     @Test
     void sendResponseSuccessfully() {
-        ResponsePayload responsePayload = ResponsePayload.builder().responseText("Response text").build();
+        ResponseMessagePayload responsePayload = ResponseMessagePayload.builder().responseText("Response text").build();
 
         Mono<Void> result = emailChannelAdapter.sendResponse(responsePayload);
 

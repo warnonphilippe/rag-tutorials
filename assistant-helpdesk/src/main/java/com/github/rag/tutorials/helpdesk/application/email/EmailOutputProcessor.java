@@ -1,8 +1,7 @@
 package com.github.rag.tutorials.helpdesk.application.email;
 
-import com.github.rag.tutorials.helpdesk.domain.conversation.model.MessagePayload;
-import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponsePayload;
-import lombok.RequiredArgsConstructor;
+import com.github.rag.tutorials.helpdesk.domain.conversation.model.RequestMessagePayload;
+import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponseMessagePayload;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
@@ -29,14 +28,14 @@ public class EmailOutputProcessor implements Processor {
 
     @Override
     public void process(Exchange exchange) {
-        ResponsePayload responsePayload = exchange.getIn().getBody(ResponsePayload.class);
+        ResponseMessagePayload responsePayload = exchange.getIn().getBody(ResponseMessagePayload.class);
 
         if (responsePayload == null) {
             log.error("ResponsePayload is null, cannot process email response");
             return;
         }
 
-        MessagePayload originalMessage = responsePayload.getOriginalMessage();
+        RequestMessagePayload originalMessage = responsePayload.getOriginalMessage();
 
         if (originalMessage == null) {
             log.error("Original message is null, cannot maintain conversation thread");
@@ -49,8 +48,8 @@ public class EmailOutputProcessor implements Processor {
     }
 
     private void prepareEmailResponse(Exchange exchange,
-                                      ResponsePayload responsePayload,
-                                      MessagePayload originalMessage) {
+                                      ResponseMessagePayload responsePayload,
+                                      RequestMessagePayload originalMessage) {
         Map<String, Object> originalHeaders = originalMessage.getMetadata();
         String messageId = Optional.ofNullable(originalHeaders.get("Message-ID"))
                 .map(Object::toString)
@@ -83,7 +82,7 @@ public class EmailOutputProcessor implements Processor {
         exchange.getIn().setHeader(Exchange.CONTENT_TYPE, "text/plain; charset=UTF-8");
     }
 
-    private String getSubject(MessagePayload originalMessage) {
+    private String getSubject(RequestMessagePayload originalMessage) {
         String subject = Optional.ofNullable(originalMessage.getSubject())
                 .orElse(defaultSubject);
 

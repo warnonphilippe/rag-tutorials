@@ -15,7 +15,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class EmailInputProcessor implements Processor {
 
-    private final EmailChannelAdapter mimeEmailAdapter;
+    private final EmailChannelAdapter emailChannelAdapter;
     private final ConversationService conversationService;
 
     @Override
@@ -23,9 +23,9 @@ public class EmailInputProcessor implements Processor {
         log.debug("Processing email message: {}", exchange);
         MailMessage mailMessage = exchange.getMessage().getBody(MailMessage.class);
         MimeMessage message = (MimeMessage) mailMessage.getMessage();
-        mimeEmailAdapter.adapt(message)
+        emailChannelAdapter.adapt(message)
                 .flatMap(conversationService::processMessage)
-                .flatMap(mimeEmailAdapter::sendResponse)
+                .flatMap(emailChannelAdapter::sendResponse)
                 .doOnError(e -> log.error("Error processing email", e))
                 .subscribe();
     }

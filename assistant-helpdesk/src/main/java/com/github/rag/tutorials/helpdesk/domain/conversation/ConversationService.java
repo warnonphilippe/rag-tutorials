@@ -1,7 +1,7 @@
 package com.github.rag.tutorials.helpdesk.domain.conversation;
 
-import com.github.rag.tutorials.helpdesk.domain.conversation.model.MessagePayload;
-import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponsePayload;
+import com.github.rag.tutorials.helpdesk.domain.conversation.model.RequestMessagePayload;
+import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponseMessagePayload;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,8 +11,8 @@ import reactor.core.publisher.Mono;
 @Slf4j
 @RequiredArgsConstructor
 public class ConversationService {
-    public Mono<ResponsePayload> processMessage(MessagePayload message) {
+    public Mono<ResponseMessagePayload> processMessage(RequestMessagePayload message) {
         log.debug("Processing message: {}", message);
-        return Mono.just(ResponsePayload.createSimple("Thank you for your message!", message));
+        return Mono.just(ResponseMessagePayload.createSimple("Thank you for your message!", message));
     }
 }

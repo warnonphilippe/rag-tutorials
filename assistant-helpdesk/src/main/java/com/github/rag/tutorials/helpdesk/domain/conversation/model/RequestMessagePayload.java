@@ -13,7 +13,7 @@ import java.util.Map;
 @Builder
 @ToString
 @RequiredArgsConstructor
-public class MessagePayload {
+public class RequestMessagePayload {
 
     private final String id;
     private final String text;
@@ -22,7 +22,7 @@ public class MessagePayload {
     private final String senderPhoneNumber;
 
     private final String senderId;
-    private final String channel;
+    private final Channel channel;
 
     private final String subject;
     private final String recipientId;
@@ -31,11 +31,11 @@ public class MessagePayload {
     private final Map<String, Object> metadata;
     private final Map<String, byte[]> attachments;
 
-    public static MessagePayload createMinimal(String text,
-                                               String senderId,
-                                               String channel,
-                                               Map<String, Object> metadata) {
-        return MessagePayload.builder()
+    public static RequestMessagePayload createMinimal(String text,
+                                                      String senderId,
+                                                      Channel channel,
+                                                      Map<String, Object> metadata) {
+        return RequestMessagePayload.builder()
                 .id(java.util.UUID.randomUUID().toString())
                 .text(text)
                 .senderId(senderId)
@@ -46,25 +46,37 @@ public class MessagePayload {
                 .build();
     }
 
-    public static MessagePayload createWithEmail(String text,
-                                                 String senderEmail,
-                                                 String senderId,
-                                                 String channel,
-                                                 String subject,
-                                                 String recipientId,
-                                                 Map<String, Object> metadata,
-                                                 Map<String, byte[]> attachments) {
-        return MessagePayload.builder()
+    public static RequestMessagePayload createWithEmail(String text,
+                                                        String senderEmail,
+                                                        String senderId,
+                                                        String subject,
+                                                        String recipientId,
+                                                        Map<String, Object> metadata,
+                                                        Map<String, byte[]> attachments) {
+        return RequestMessagePayload.builder()
                 .id(java.util.UUID.randomUUID().toString())
                 .text(text)
                 .senderEmail(senderEmail)
                 .senderId(senderId)
-                .channel(channel)
+                .channel(Channel.EMAIL)
                 .subject(subject)
                 .recipientId(recipientId)
                 .timestamp(LocalDateTime.now())
                 .metadata(metadata)
                 .attachments(attachments)
+                .build();
+    }
+
+    public static RequestMessagePayload createWithChat(String text,
+                                                       String senderId,
+                                                       Map<String, Object> metadata) {
+        return RequestMessagePayload.builder()
+                .id(java.util.UUID.randomUUID().toString())
+                .text(text)
+                .senderId(senderId)
+                .channel(Channel.EMAIL)
+                .timestamp(LocalDateTime.now())
+                .metadata(metadata)
                 .build();
     }
 

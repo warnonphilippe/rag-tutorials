@@ -1,7 +1,7 @@
 package com.github.rag.tutorials.helpdesk.application.email;
 
-import com.github.rag.tutorials.helpdesk.domain.conversation.model.MessagePayload;
-import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponsePayload;
+import com.github.rag.tutorials.helpdesk.domain.conversation.model.RequestMessagePayload;
+import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponseMessagePayload;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.junit.jupiter.api.BeforeEach;
@@ -41,18 +41,18 @@ class EmailOutputProcessorTest {
         metadata.put("Message-ID", "12345");
         metadata.put("References", "12345");
 
-        MessagePayload originalMessage = MessagePayload.builder()
+        RequestMessagePayload originalMessage = RequestMessagePayload.builder()
                 .senderEmail("test@example.com")
                 .subject("Test Subject")
                 .metadata(metadata)
                 .build();
 
-        ResponsePayload responsePayload = ResponsePayload.builder()
+        ResponseMessagePayload responsePayload = ResponseMessagePayload.builder()
                 .originalMessage(originalMessage)
                 .responseText("Response text")
                 .build();
 
-        when(camelMessage.getBody(ResponsePayload.class)).thenReturn(responsePayload);
+        when(camelMessage.getBody(ResponseMessagePayload.class)).thenReturn(responsePayload);
 
         emailOutputProcessor.process(exchange);
 
@@ -66,7 +66,7 @@ class EmailOutputProcessorTest {
 
     @Test
     void processEmailResponseWithNullResponsePayload() {
-        when(camelMessage.getBody(ResponsePayload.class)).thenReturn(null);
+        when(camelMessage.getBody(ResponseMessagePayload.class)).thenReturn(null);
 
         emailOutputProcessor.process(exchange);
 
@@ -76,12 +76,12 @@ class EmailOutputProcessorTest {
 
     @Test
     void processEmailResponseWithNullOriginalMessage() {
-        ResponsePayload responsePayload = ResponsePayload.builder()
+        ResponseMessagePayload responsePayload = ResponseMessagePayload.builder()
                 .originalMessage(null)
                 .responseText("Response text")
                 .build();
 
-        when(camelMessage.getBody(ResponsePayload.class)).thenReturn(responsePayload);
+        when(camelMessage.getBody(ResponseMessagePayload.class)).thenReturn(responsePayload);
 
         emailOutputProcessor.process(exchange);
 
@@ -94,18 +94,18 @@ class EmailOutputProcessorTest {
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("References", "12345");
 
-        MessagePayload originalMessage = MessagePayload.builder()
+        RequestMessagePayload originalMessage = RequestMessagePayload.builder()
                 .senderEmail("test@example.com")
                 .subject("Test Subject")
                 .metadata(metadata)
                 .build();
 
-        ResponsePayload responsePayload = ResponsePayload.builder()
+        ResponseMessagePayload responsePayload = ResponseMessagePayload.builder()
                 .originalMessage(originalMessage)
                 .responseText("Response text")
                 .build();
 
-        when(camelMessage.getBody(ResponsePayload.class)).thenReturn(responsePayload);
+        when(camelMessage.getBody(ResponseMessagePayload.class)).thenReturn(responsePayload);
 
         emailOutputProcessor.process(exchange);
 
@@ -122,18 +122,18 @@ class EmailOutputProcessorTest {
         Map<String, Object> metadata = new HashMap<>();
         metadata.put("Message-ID", "12345");
 
-        MessagePayload originalMessage = MessagePayload.builder()
+        RequestMessagePayload originalMessage = RequestMessagePayload.builder()
                 .senderEmail("test@example.com")
                 .subject("Test Subject")
                 .metadata(metadata)
                 .build();
 
-        ResponsePayload responsePayload = ResponsePayload.builder()
+        ResponseMessagePayload responsePayload = ResponseMessagePayload.builder()
                 .originalMessage(originalMessage)
                 .responseText("Response text")
                 .build();
 
-        when(camelMessage.getBody(ResponsePayload.class)).thenReturn(responsePayload);
+        when(camelMessage.getBody(ResponseMessagePayload.class)).thenReturn(responsePayload);
 
         emailOutputProcessor.process(exchange);
 

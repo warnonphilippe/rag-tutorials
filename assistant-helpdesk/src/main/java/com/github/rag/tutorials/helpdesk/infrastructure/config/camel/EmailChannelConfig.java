@@ -44,11 +44,20 @@ public class EmailChannelConfig {
     @Value("${mail.ssl.enabled}")
     private boolean sslEnabled;
 
+    @Value("${mail.imap.disabled}")
+    private boolean imapDisabled;
+
     @Bean
     public RouteBuilder mailRoutes() {
         return new RouteBuilder() {
             @Override
             public void configure() {
+
+                if (imapDisabled) {
+                    log.info("IMAP is disabled, skipping email configuration");
+                    return;
+                }
+
                 String imapProtocol = sslEnabled ? "imaps" : "imap";
                 String smtpProtocol = sslEnabled ? "smtps" : "smtp";
 
