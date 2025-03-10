@@ -109,7 +109,6 @@ public class EmailChannelAdapter implements ChannelAdapter<MimeMessage> {
     }
 
     private String extractTextFromHtml(String html) {
-        // Una implementazione semplificata - in produzione usare JSoup o simili
         return html.replaceAll("<[^>]*>", "").trim();
     }
 }

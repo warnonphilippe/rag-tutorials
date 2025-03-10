@@ -4,5 +4,5 @@ public enum Channel {
     EMAIL,
     SMS,
     CHAT,
-    PHONE
+    WHATSAPP, PHONE
 }
