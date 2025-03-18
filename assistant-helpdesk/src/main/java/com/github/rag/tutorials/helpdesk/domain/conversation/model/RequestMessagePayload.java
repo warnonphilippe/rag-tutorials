@@ -8,6 +8,7 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 
 @Getter
 @Builder
@@ -75,6 +76,22 @@ public class RequestMessagePayload {
                 .text(text)
                 .senderId(senderId)
                 .channel(Channel.EMAIL)
+                .timestamp(LocalDateTime.now())
+                .metadata(metadata)
+                .build();
+    }
+
+    public static RequestMessagePayload createWithWhatsApp(String messageBody,
+                                                           String fromNumber,
+                                                           String toNumber,
+                                                           Map<String, Object> metadata) {
+        return RequestMessagePayload.builder()
+                .id(UUID.randomUUID().toString())
+                .text(messageBody)
+                .senderId(fromNumber)
+                .recipientId(toNumber)
+                .senderPhoneNumber(fromNumber)
+                .channel(Channel.WHATSAPP)
                 .timestamp(LocalDateTime.now())
                 .metadata(metadata)
                 .build();

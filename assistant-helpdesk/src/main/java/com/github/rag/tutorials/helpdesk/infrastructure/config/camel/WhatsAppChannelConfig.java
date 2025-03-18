@@ -27,7 +27,8 @@ public class WhatsAppChannelConfig {
                 from("direct:whatsAppOutput")
                         .routeId("whatsAppOutputRoute")
                         .log("Sending response to WhatsApp: ${body}")
-                        .to("bean:whatsAppOutputProcessor");
+                        .bean("whatsAppOutputProcessor")
+                        .to("bean:whatsAppSender");
             }
         };
     }

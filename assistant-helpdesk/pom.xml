@@ -18,6 +18,7 @@
         <springboot.version>3.4.3</springboot.version>
         <camel.version>4.10.1</camel.version>
         <langchain4j.version>1.0.0-beta1</langchain4j.version>
+        <twilio.version>10.7.0</twilio.version>
     </properties>
 
     <dependencyManagement>
@@ -56,6 +57,29 @@
             <groupId>dev.langchain4j</groupId>
             <artifactId>langchain4j-embeddings-all-minilm-l6-v2</artifactId>
             <version>${langchain4j.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>ai.djl</groupId>
+                    <artifactId>api</artifactId>
+                </exclusion>
+                <exclusion>
+                    <groupId>ai.djl.huggingface</groupId>
+                    <artifactId>tokenizers</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+
+        <!-- Mac CPU Intel DJL dependencies -->
+        <dependency>
+            <groupId>ai.djl.huggingface</groupId>
+            <artifactId>tokenizers</artifactId>
+            <version>0.28.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>ai.djl</groupId>
+            <artifactId>api</artifactId>
+            <version>0.28.0</version>
         </dependency>
 
         <dependency>
@@ -81,6 +105,12 @@
         <dependency>
             <groupId>org.apache.camel.springboot</groupId>
             <artifactId>camel-mail-starter</artifactId>
+        </dependency>
+
+        <dependency>
+            <groupId>com.twilio.sdk</groupId>
+            <artifactId>twilio</artifactId>
+            <version>${twilio.version}</version>
         </dependency>
 
         <dependency>
