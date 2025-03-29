@@ -19,22 +19,6 @@ public class WhatsAppController {
     
     private final ProducerTemplate producerTemplate;
     
-
-    //SmsMessageSid=SMe432421696bfd504b0ea94f2c84626c5
-    // &NumMedia=0
-    // &ProfileName=Giuseppe+T.
-    // &MessageType=text
-    // &SmsSid=SMe432421696bfd504b0ea94f2c84626c5
-    // &WaId=393490625232
-    // &SmsStatus=received
-    // &Body=test
-    // &To=whatsapp%3A%2B14155238886
-    // &NumSegments=1
-    // &ReferralNumMedia=0
-    // &MessageSid=SMe432421696bfd504b0ea94f2c84626c5
-    // &AccountSid=ACbce4252bb35636395a48d0313dc0c831
-    // &From=whatsapp%3A%2B393490625232
-    // &ApiVersion=2010-04-01
     @PostMapping(value = "/incoming", produces = MediaType.APPLICATION_XML_VALUE)
     public ResponseEntity<Void> incomingMessage(
             @RequestParam("Body") String messageBody,
