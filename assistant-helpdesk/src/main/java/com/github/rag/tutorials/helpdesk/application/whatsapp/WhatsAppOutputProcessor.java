@@ -1,9 +1,6 @@
 package com.github.rag.tutorials.helpdesk.application.whatsapp;
 
 import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponseMessagePayload;
-import com.twilio.twiml.MessagingResponse;
-import com.twilio.twiml.messaging.Body;
-import com.twilio.twiml.messaging.Message;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.camel.Exchange;

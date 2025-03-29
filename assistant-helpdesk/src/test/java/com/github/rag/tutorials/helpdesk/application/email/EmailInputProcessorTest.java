@@ -1,6 +1,6 @@
 package com.github.rag.tutorials.helpdesk.application.email;
 
-import com.github.rag.tutorials.helpdesk.domain.conversation.ConversationService;
+import com.github.rag.tutorials.helpdesk.domain.conversation.service.ConversationService;
 import com.github.rag.tutorials.helpdesk.domain.conversation.model.RequestMessagePayload;
 import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponseMessagePayload;
 import com.github.rag.tutorials.helpdesk.infrastructure.adapter.email.EmailChannelAdapter;

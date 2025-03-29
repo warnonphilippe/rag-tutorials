@@ -1,7 +1,7 @@
 package com.github.rag.tutorials.helpdesk.application.chat;
 
 import com.github.rag.tutorials.helpdesk.application.chat.dto.ChatMessageRequest;
-import com.github.rag.tutorials.helpdesk.domain.conversation.ConversationService;
+import com.github.rag.tutorials.helpdesk.domain.conversation.service.ConversationService;
 import com.github.rag.tutorials.helpdesk.infrastructure.adapter.chat.ChatChannelAdapter;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
