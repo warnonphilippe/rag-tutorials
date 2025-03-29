@@ -16,7 +16,6 @@ public class ChatChannelConfig {
     @Bean
     public RouteBuilder chatRoutes() {
         return new RouteBuilder() {
-
             @Override
             public void configure() throws Exception {
                 from("direct:webChatInput")
