@@ -4,12 +4,26 @@ import com.github.rag.tutorials.helpdesk.domain.contract.model.Contract;
 import com.github.rag.tutorials.helpdesk.domain.contract.repository.ContractRepository;
 import com.github.rag.tutorials.helpdesk.domain.customer.model.Customer;
 import com.github.rag.tutorials.helpdesk.domain.customer.repository.CustomerRepository;
+import dev.langchain4j.data.document.Document;
+import dev.langchain4j.data.document.DocumentSplitter;
+import dev.langchain4j.data.document.parser.TextDocumentParser;
+import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
+import dev.langchain4j.data.document.splitter.DocumentBySentenceSplitter;
+import dev.langchain4j.model.Tokenizer;
+import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 import java.time.LocalDate;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+
+import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocument;
 
 @SpringBootApplication
 public class Application {
@@ -18,9 +32,19 @@ public class Application {
     }
 
     @Bean
-    CommandLineRunner initData(CustomerRepository customerRepository, ContractRepository contractRepository) {
+    CommandLineRunner initData(CustomerRepository customerRepository, 
+                               ContractRepository contractRepository,
+                               EmbeddingStoreIngestor ingestor,
+                               ResourceLoader resourceLoader,
+                               Tokenizer tokenizer) {
         return args -> {
-            // Crea e salva i clienti
+            List<String> documents = Arrays.asList("guida_smartpos.pdf", "guida-utilizzo-mobilepos.pdf");
+            for (String document : documents) {
+                Resource resource = resourceLoader.getResource("classpath:" +document);
+                Document doc = loadDocument(resource.getFile().toPath(), new ApachePdfBoxDocumentParser());
+                ingestor.ingest(doc);
+            }
+            
             Customer customer1 = Customer.builder()
                     .firstName("John")
                     .lastName("Doe")
@@ -39,9 +63,12 @@ public class Application {
             customerRepository.save(customer1);
             customerRepository.save(customer2);
 
-            // Crea e salva i contratti
             Contract contract1 = Contract.builder()
                     .customer(customer1)
+                    .active(true)
+                    .contractType("FULL")
+                    .contractNumber("CONTRACT123")
+                    .description("Full contract for John Doe")
                     .startDate(LocalDate.now())
                     .endDate(LocalDate.now().plusYears(1))
                     .build();

@@ -8,6 +8,7 @@ import lombok.ToString;
 import java.time.LocalDateTime;
 import java.util.Collections;
 import java.util.Map;
+import java.util.UUID;
 
 @Getter
 @Builder
@@ -31,21 +32,6 @@ public class RequestMessagePayload {
     private final Map<String, Object> metadata;
     private final Map<String, byte[]> attachments;
 
-    public static RequestMessagePayload createMinimal(String text,
-                                                      String senderId,
-                                                      Channel channel,
-                                                      Map<String, Object> metadata) {
-        return RequestMessagePayload.builder()
-                .id(java.util.UUID.randomUUID().toString())
-                .text(text)
-                .senderId(senderId)
-                .channel(channel)
-                .timestamp(LocalDateTime.now())
-                .metadata(metadata)
-                .attachments(Collections.emptyMap())
-                .build();
-    }
-
     public static RequestMessagePayload createWithEmail(String text,
                                                         String senderEmail,
                                                         String senderId,
@@ -57,6 +43,7 @@ public class RequestMessagePayload {
                 .id(java.util.UUID.randomUUID().toString())
                 .text(text)
                 .senderEmail(senderEmail)
+                .senderPhoneNumber("not_defined")
                 .senderId(senderId)
                 .channel(Channel.EMAIL)
                 .subject(subject)
@@ -74,7 +61,26 @@ public class RequestMessagePayload {
                 .id(java.util.UUID.randomUUID().toString())
                 .text(text)
                 .senderId(senderId)
-                .channel(Channel.EMAIL)
+                .channel(Channel.CHAT)
+                .senderEmail("not_defined")
+                .senderPhoneNumber("not_defined")
+                .timestamp(LocalDateTime.now())
+                .metadata(metadata)
+                .build();
+    }
+
+    public static RequestMessagePayload createWithWhatsApp(String messageBody,
+                                                           String fromNumber,
+                                                           String toNumber,
+                                                           Map<String, Object> metadata) {
+        return RequestMessagePayload.builder()
+                .id(UUID.randomUUID().toString())
+                .text(messageBody)
+                .senderId(fromNumber)
+                .recipientId(toNumber)
+                .senderEmail("not_defined")
+                .senderPhoneNumber(fromNumber)
+                .channel(Channel.WHATSAPP)
                 .timestamp(LocalDateTime.now())
                 .metadata(metadata)
                 .build();

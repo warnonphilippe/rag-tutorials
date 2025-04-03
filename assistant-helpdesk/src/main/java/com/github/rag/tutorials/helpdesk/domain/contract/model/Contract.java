@@ -29,4 +29,6 @@ public class Contract {
     private LocalDate startDate;
     private LocalDate endDate;
     private String contractType;
+    private String contractNumber;
+    private String description;
 }

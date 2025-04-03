@@ -1,17 +1,25 @@
 package com.github.rag.tutorials.helpdesk.infrastructure.config.rag;
 
+import com.github.rag.tutorials.helpdesk.infrastructure.rag.agent.*;
 import com.github.rag.tutorials.helpdesk.infrastructure.rag.store.JpaConversationMemoryStore;
+import com.github.rag.tutorials.helpdesk.infrastructure.rag.tool.CustomerIdentificationTool;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.splitter.DocumentBySentenceSplitter;
 import dev.langchain4j.data.segment.TextSegment;
-import dev.langchain4j.memory.chat.ChatMemoryProvider;
+import dev.langchain4j.memory.ChatMemory;
 import dev.langchain4j.memory.chat.MessageWindowChatMemory;
 import dev.langchain4j.model.Tokenizer;
+import dev.langchain4j.model.chat.ChatLanguageModel;
 import dev.langchain4j.model.embedding.EmbeddingModel;
 import dev.langchain4j.model.embedding.onnx.HuggingFaceTokenizer;
 import dev.langchain4j.model.embedding.onnx.allminilml6v2.AllMiniLmL6V2EmbeddingModel;
+import dev.langchain4j.rag.DefaultRetrievalAugmentor;
+import dev.langchain4j.rag.RetrievalAugmentor;
+import dev.langchain4j.rag.content.injector.ContentInjector;
+import dev.langchain4j.rag.content.injector.DefaultContentInjector;
 import dev.langchain4j.rag.content.retriever.ContentRetriever;
 import dev.langchain4j.rag.content.retriever.EmbeddingStoreContentRetriever;
+import dev.langchain4j.service.AiServices;
 import dev.langchain4j.store.embedding.EmbeddingStore;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import dev.langchain4j.store.embedding.inmemory.InMemoryEmbeddingStore;
@@ -26,9 +34,8 @@ public class RagConfig {
     }
 
     @Bean
-    ChatMemoryProvider chatMemoryProvider(JpaConversationMemoryStore jpaConversationMemoryStore) {
-        return memoryId -> MessageWindowChatMemory.builder()
-                .id(memoryId)
+    ChatMemory chatMemory(JpaConversationMemoryStore jpaConversationMemoryStore) {
+        return MessageWindowChatMemory.builder()
                 .chatMemoryStore(jpaConversationMemoryStore)
                 .maxMessages(15)
                 .build();
@@ -66,6 +73,72 @@ public class RagConfig {
                 .embeddingModel(embeddingModel)
                 .maxResults(maxResults)
                 .minScore(minScore)
+                .build();
+    }
+
+
+    @Bean
+    AuthenticationAgent authenticationAgent(ChatLanguageModel model,
+                                            ChatMemory chatMemoryProvider,
+                                            CustomerIdentificationTool tools) {
+        return AiServices.builder(AuthenticationAgent.class)
+                .chatLanguageModel(model)
+                .tools(tools)
+                .chatMemory(chatMemoryProvider)
+                .build();
+    }
+
+    @Bean
+    ContractVerificationAgent contractVerificationAgent(ChatLanguageModel model,
+                                                        ChatMemory chatMemoryProvider) {
+        return AiServices.builder(ContractVerificationAgent.class)
+                .chatLanguageModel(model)
+                .chatMemory(chatMemoryProvider)
+                .build();
+    }
+
+    @Bean
+    IssueClassificationAgent issueClassificationAgent(ChatLanguageModel model,
+                                                      ChatMemory chatMemoryProvider) {
+        return AiServices.builder(IssueClassificationAgent.class)
+                .chatLanguageModel(model)
+                .chatMemory(chatMemoryProvider)
+                .build();
+    }
+
+    @Bean
+    KnowledgeBaseAgent knowledgeBaseAgent(ChatLanguageModel model,
+                                          RetrievalAugmentor retrievalAugmentor,
+                                          ChatMemory chatMemoryProvider) {
+        return AiServices.builder(KnowledgeBaseAgent.class)
+                .chatLanguageModel(model)
+                .retrievalAugmentor(retrievalAugmentor)
+                .chatMemory(chatMemoryProvider)
+                .build();
+    }
+
+    @Bean
+    TicketCreationAgent ticketCreationAgent(ChatLanguageModel model,
+                                            ChatMemory chatMemoryProvider) {
+        return AiServices.builder(TicketCreationAgent.class)
+                .chatLanguageModel(model)
+                .chatMemory(chatMemoryProvider)
+                .build();
+    }
+
+    @Bean
+    RetrievalAugmentor retrievalAugmentor(ContentRetriever contentRetriever,
+                                          ContentInjector contentInjector) {
+        return DefaultRetrievalAugmentor.builder()
+                .contentRetriever(contentRetriever)
+                .contentInjector(contentInjector)
+                .build();
+    }
+
+    @Bean
+    ContentInjector contentInjector() {
+        return DefaultContentInjector.builder()
+                .metadataKeysToInclude(java.util.Arrays.asList("source", "relevance", "language"))
                 .build();
     }
 }
