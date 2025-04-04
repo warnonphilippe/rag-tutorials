@@ -32,26 +32,25 @@ public class IssueClassificationService {
         IssueClassificationResult result = issueClassificationResultResult.content();
         state.setIssueType(result.getIssueType());
 
-        // Determines the type of issue and the action to take
+        log.debug("Determines the type of issue and the action to take");
+        log.info("Issue classification result: {}", result);
         String issueType = result.getIssueType();
         switch (issueType) {
             case "ADMINISTRATIVE":
-                // Administrative issue, forward to administrative department and conclude
+                log.debug("Administrative issue, forwarding to the administrative team");
                 state.setCurrentStage(COMPLETED);
                 state.setCompletionReason("ADMINISTRATIVE_ISSUE_FORWARDED");
                 conversationStateRepository.save(state);
                 return ResponseMessagePayload.createSimple(result.getMessage(), message);
-
             case "TECHNICAL":
-                // Technical issue, search in the knowledge base
+                log.debug("Technical issue, forwarding to the technical team");
                 state.setCurrentStage(KNOWLEDGE_BASE_SEARCH);
                 conversationStateRepository.save(state);
                 return knowledgeBaseSearchService.handleKnowledgeBaseSearch(message, state);
-
             case "ASK_MORE_INFO":
-                // Handling attempts for unclassified issues
+                log.debug("Requesting more information from the customer");
                 if (state.getRetryCount() >= 2) {
-                    // Unable to classify the issue after attempts, proceed to ticket creation
+                    log.debug("Customer has already been asked for more information 2 times, proceeding to ticket creation");
                     state.setCurrentStage(TICKET_CREATION);
                     conversationStateRepository.save(state);
                     return ticketCreationService.handleTicketCreation(message, state);
@@ -59,10 +58,9 @@ public class IssueClassificationService {
                 state.setRetryCount(state.getRetryCount() + 1);
                 conversationStateRepository.save(state);
                 return ResponseMessagePayload.createSimple(result.getMessage(), message);
-
             case "OTHER":
             default:
-                // Unable to classify the issue, proceed directly to ticket creation
+                log.debug("Other issue type, proceeding to ticket creation");
                 state.setCurrentStage(TICKET_CREATION);
                 conversationStateRepository.save(state);
                 return ticketCreationService.handleTicketCreation(message, state);

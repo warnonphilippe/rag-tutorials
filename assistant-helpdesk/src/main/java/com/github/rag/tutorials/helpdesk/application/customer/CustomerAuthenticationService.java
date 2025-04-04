@@ -28,7 +28,6 @@ public class CustomerAuthenticationService {
 
     public Customer sendOtpForCustomerCode(String customerCode) {
         Optional<Customer> customerOpt = customerIdentificationService.identifyByCode(customerCode);
-
         if (customerOpt.isPresent()) {
             Customer customer = customerOpt.get();
             Otp otp = otpService.generateOtp(customer);

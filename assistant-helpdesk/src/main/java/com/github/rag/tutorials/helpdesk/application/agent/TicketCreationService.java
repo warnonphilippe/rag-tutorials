@@ -25,13 +25,14 @@ public class TicketCreationService {
     private final ConversationStateRepository stateRepository;
 
     public ResponseMessagePayload handleTicketCreation(RequestMessagePayload message, ConversationState state) {
-        Result<TicketCreationResult> ticketCreationResultResult = ticketCreationAgent.createTicket(
+        Result<TicketCreationResult> ticketCreationResult = ticketCreationAgent.createTicket(
                 message.getText(),
                 state.getCustomerCode(),
                 state.getSelectedContractNumber(),
                 state.getIssueType()
         );
-        TicketCreationResult result = ticketCreationResultResult.content();
+        log.info("Ticket creation result: {}", ticketCreationResult);
+        TicketCreationResult result = ticketCreationResult.content();
 
         UUID ticketId = doNewTicketService.newTicket(result, state);
         state.setCurrentStage(COMPLETED);

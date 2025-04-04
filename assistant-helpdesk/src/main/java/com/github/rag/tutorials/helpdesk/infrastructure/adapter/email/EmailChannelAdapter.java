@@ -95,11 +95,8 @@ public class EmailChannelAdapter implements ChannelAdapter<MimeMessage> {
 
     @Override
     public Mono<Void> sendResponse(ResponseMessagePayload responsePayload) {
-        return Mono.fromRunnable(() -> {
-                    producerTemplate.sendBody(
-                            "direct:sendEmail",
-                            responsePayload);
-                }).subscribeOn(Schedulers.boundedElastic())
+        return Mono.fromRunnable(() -> producerTemplate.sendBody("direct:sendEmail", responsePayload))
+                .subscribeOn(Schedulers.boundedElastic())
                 .then();
     }
 

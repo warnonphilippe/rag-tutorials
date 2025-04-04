@@ -8,7 +8,6 @@ import org.apache.camel.Exchange;
 import org.apache.camel.Processor;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.stereotype.Component;
-import org.springframework.web.socket.TextMessage;
 
 @Slf4j
 @Component

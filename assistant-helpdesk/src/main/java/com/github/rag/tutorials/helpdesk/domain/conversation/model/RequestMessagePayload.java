@@ -86,22 +86,6 @@ public class RequestMessagePayload {
                 .build();
     }
 
-    public static RequestMessagePayload createWithWhatsApp(String messageBody,
-                                                           String fromNumber,
-                                                           String toNumber,
-                                                           Map<String, Object> metadata) {
-        return RequestMessagePayload.builder()
-                .id(UUID.randomUUID().toString())
-                .text(messageBody)
-                .senderId(fromNumber)
-                .recipientId(toNumber)
-                .senderPhoneNumber(fromNumber)
-                .channel(Channel.WHATSAPP)
-                .timestamp(LocalDateTime.now())
-                .metadata(metadata)
-                .build();
-    }
-
     public Map<String, Object> getMetadata() {
         return Collections.unmodifiableMap(metadata != null ? metadata : Collections.emptyMap());
     }

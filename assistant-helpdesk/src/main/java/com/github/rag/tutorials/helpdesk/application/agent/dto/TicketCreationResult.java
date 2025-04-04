@@ -9,34 +9,37 @@ import lombok.Data;
 @Builder
 public class TicketCreationResult {
     private final String priority;
+    private final String description;
     private final String message;
 
     @JsonCreator
     public TicketCreationResult(
             @JsonProperty("priority") String priority, 
+            @JsonProperty("description") String description,
             @JsonProperty("message") String message) {
         this.priority = priority;
+        this.description = description;
         this.message = message;
     }
 
     public static TicketCreationResult highPriority(String message) {
         return TicketCreationResult.builder()
                 .priority("high")
-                .message(message)
+                .description(message)
                 .build();
     }
 
     public static TicketCreationResult mediumPriority(String message) {
         return TicketCreationResult.builder()
                 .priority("medium")
-                .message(message)
+                .description(message)
                 .build();
     }
 
     public static TicketCreationResult lowPriority(String message) {
         return TicketCreationResult.builder()
                 .priority("low")
-                .message(message)
+                .description(message)
                 .build();
     }
 }

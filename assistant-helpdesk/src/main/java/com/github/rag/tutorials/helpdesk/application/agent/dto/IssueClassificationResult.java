@@ -8,7 +8,7 @@ import lombok.Data;
 @Data
 @Builder
 public class IssueClassificationResult {
-    private final String issueType; // "TECHNICAL", "ADMINISTRATIVE", "UNKNOWN"
+    private final String issueType;
     private final boolean technicalIssue;
     private final boolean administrativeIssue;
     private final String message;

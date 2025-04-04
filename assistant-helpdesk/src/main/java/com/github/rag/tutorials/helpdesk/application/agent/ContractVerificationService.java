@@ -28,32 +28,40 @@ public class ContractVerificationService {
     private final IssueClassificationService issueClassificationService;
 
     public ResponseMessagePayload handleContractVerification(RequestMessagePayload message, ConversationState state) {
+        log.debug("Handling contract verification");
         String contracts = contractRepository.findByCustomerIdAndActiveTrue(state.getCustomerId())
                 .stream()
                 .map(contract -> contract.getContractNumber() + " - "+ contract.getDescription() + ";\n")
-                .collect(Collectors.joining());    
+                .collect(Collectors.joining());
+        log.debug("Contracts: {}", contracts);
         Result<ContractVerificationResult> contractVerificationResultResult = contractVerificationAgent.verifyContracts(
                 message.getText(),
                 state.getCustomerCode(),
                 state.getCurrentStage().toString(),
                 contracts
         );
+        log.debug("Contract verification result: {}", contractVerificationResultResult);
         ContractVerificationResult result = contractVerificationResultResult.content();
         if (result.isContractSelected()) {
+            log.debug("Contract selected: {}", result.getSelectedContractNumber());
             state.setCurrentStage(Stage.ISSUE_CLASSIFICATION);
             state.setSelectedContractNumber(result.getSelectedContractNumber());
             stateRepository.save(state);
-
+            log.debug("Moving to issue classification stage");
             return issueClassificationService.handleIssueClassification(message, state);
         } else if (result.isNoActiveContracts()) {
             state.setCurrentStage(COMPLETED);
             state.setCompletionReason("NO_ACTIVE_CONTRACTS");
             stateRepository.save(state);
-
+            log.debug("No active contracts found");
+            //TODO: send email to Sales team
+            log.debug("AI Assistant message: {}", message.getText());
             return ResponseMessagePayload.createSimple(result.getMessage(), message);
         }
-
         stateRepository.save(state);
+        log.debug("No contract selected");
+        log.debug("Retrying contract verification");
+        log.debug("AI Assistant message: {}", message.getText());
         return ResponseMessagePayload.createSimple(result.getMessage(), message);
     }
 }

@@ -35,6 +35,7 @@ public interface TicketCreationAgent {
             
             Provide a TicketCreationResult object with:
             - priority: "HIGH", "MEDIUM", or "LOW"
+            - description: a clear and detail description of the problem
             - message: message to show the user confirming the ticket creation and the next steps
             """)
     Result<TicketCreationResult> createTicket(@V("text") String message,

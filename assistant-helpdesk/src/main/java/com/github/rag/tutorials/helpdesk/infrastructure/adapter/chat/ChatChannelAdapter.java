@@ -17,7 +17,6 @@ import reactor.core.scheduler.Schedulers;
 @RequiredArgsConstructor
 public class ChatChannelAdapter implements ChannelAdapter<ChatMessageRequest> {
 
-    //    private final ChatSessionManager sessionManager;
     private final ProducerTemplate producerTemplate;
 
     @Override
@@ -30,8 +29,8 @@ public class ChatChannelAdapter implements ChannelAdapter<ChatMessageRequest> {
                         rawMessage.getSessionId(),
                         null);
             } catch (Exception e) {
-                log.error("Error parsing email message", e);
-                throw new RuntimeException("Failed to parse email", e);
+                log.error("Failed to handler chat message", e);
+                throw new RuntimeException("Failed to handler chat message", e);
             }
         }).subscribeOn(Schedulers.boundedElastic());
     }

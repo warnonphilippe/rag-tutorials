@@ -60,7 +60,6 @@ public class CustomerIdentificationTool {
                     .email(customer.getEmail())
                     .build();
         }
-        
         return CustomerIdentificationResult.builder().build();
     }
 }

@@ -31,23 +31,19 @@ public class KnowledgeBaseSearchService {
         );
         
         KnowledgeBaseResult result = knowledgeBaseResultResult.content();
-
+        log.info("Knowledge base search result: {}", result);
         if (result.isSolutionFound()) {
-            // Solution found in the knowledge base, complete successfully
+            log.debug("Solution found in the knowledge base");
             state.setCurrentStage(COMPLETED);
             state.setCompletionReason("SOLUTION_PROVIDED");
             stateRepository.save(state);
-            
             String msg = result.getMessage();
-            msg += "\n\n" + "Solution found: \n\n" + result.getSolution();
-
+            msg += "\n\n\nSolution found: \n\n\n" + result.getSolution();
             return ResponseMessagePayload.createSimple(msg, message);
         }
-
-        // No solution found, proceed with ticket creation
+        log.debug("No solution found in the knowledge base, proceeding to ticket creation");
         state.setCurrentStage(TICKET_CREATION);
         stateRepository.save(state);
-
         return ticketCreationService.handleTicketCreation(message, state);
     }
 }

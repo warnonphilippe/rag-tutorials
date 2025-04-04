@@ -1,9 +1,10 @@
 package com.github.rag.tutorials.helpdesk.application.email;
 
-import com.github.rag.tutorials.helpdesk.domain.conversation.service.ConversationService;
 import com.github.rag.tutorials.helpdesk.domain.conversation.model.RequestMessagePayload;
 import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponseMessagePayload;
+import com.github.rag.tutorials.helpdesk.domain.conversation.service.ConversationService;
 import com.github.rag.tutorials.helpdesk.infrastructure.adapter.email.EmailChannelAdapter;
+import jakarta.mail.internet.MimeMessage;
 import org.apache.camel.Exchange;
 import org.apache.camel.Message;
 import org.apache.camel.component.mail.MailMessage;
@@ -13,8 +14,6 @@ import org.junit.runner.RunWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-
-import jakarta.mail.internet.MimeMessage;
 import org.mockito.junit.MockitoJUnitRunner;
 import reactor.core.publisher.Mono;
 

@@ -19,30 +19,26 @@ public class OtpService {
     public Otp generateOtp(Customer customer) {
         String code = generateRandomCode();
         LocalDateTime now = LocalDateTime.now();
-
         Otp otp = Otp.builder()
                 .customerCode(customer.getCode())
                 .code(code)
                 .email(customer.getEmail())
                 .createdAt(now)
-                .expiresAt(now.plusMinutes(15)) // 15 minuti di validità
+                .expiresAt(now.plusMinutes(15))
                 .used(false)
                 .build();
-
         return otpRepository.save(otp);
     }
 
     public boolean verifyOtp(String customerCode, String code) {
         Optional<Otp> otpOpt = otpRepository.findByCustomerCodeAndCodeAndUsedFalseAndExpiresAtAfter(
                 customerCode, code, LocalDateTime.now());
-
         if (otpOpt.isPresent()) {
             Otp otp = otpOpt.get();
             otp.setUsed(true);
             otpRepository.save(otp);
             return true;
         }
-
         return false;
     }
 

@@ -29,21 +29,16 @@ public class EmailOutputProcessor implements Processor {
     @Override
     public void process(Exchange exchange) {
         ResponseMessagePayload responsePayload = exchange.getIn().getBody(ResponseMessagePayload.class);
-
         if (responsePayload == null) {
             log.error("ResponsePayload is null, cannot process email response");
             return;
         }
-
         RequestMessagePayload originalMessage = responsePayload.getOriginalMessage();
-
         if (originalMessage == null) {
             log.error("Original message is null, cannot maintain conversation thread");
             return;
         }
-
         prepareEmailResponse(exchange, responsePayload, originalMessage);
-
         log.info("Email response prepared for: {}", originalMessage.getSenderEmail());
     }
 

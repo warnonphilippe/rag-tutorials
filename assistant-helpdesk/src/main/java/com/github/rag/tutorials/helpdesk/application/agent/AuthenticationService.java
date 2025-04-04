@@ -35,14 +35,22 @@ public class AuthenticationService {
         log.debug("Authentication result: {}", authenticationResult);
         AuthenticationResult result = authenticationResult.content();
         if (result.isAuthenticated()) {
+            log.debug("Authenticated customerId: {}", result.getCustomerId());
+            log.debug("Authenticated customer code: {}", result.getCustomerCode());
+            log.debug("Authenticated customer email: {}", result.getCustomerEmail());
             state.setCurrentStage(Stage.CONTRACT_VERIFICATION);
             state.setCustomerId(UUID.fromString(result.getCustomerId()));
             state.setCustomerCode(result.getCustomerCode());
             state.setCustomerEmail(result.getCustomerEmail());
             conversationStateRepository.save(state);
+            log.debug("Customer authenticated successfully");
+            log.debug("Moving to contract verification stage");
             return contractVerificationService.handleContractVerification(message, state);
         }
+        log.debug("Authentication failed");
+        log.debug("Retrying authentication");
         conversationStateRepository.save(state);
+        log.debug("AI Assistant message: {}", message.getText());
         return ResponseMessagePayload.createSimple(result.getMessage(), message);
     }
 

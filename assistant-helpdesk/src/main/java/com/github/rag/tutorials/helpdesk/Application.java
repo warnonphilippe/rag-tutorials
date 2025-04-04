@@ -5,10 +5,7 @@ import com.github.rag.tutorials.helpdesk.domain.contract.repository.ContractRepo
 import com.github.rag.tutorials.helpdesk.domain.customer.model.Customer;
 import com.github.rag.tutorials.helpdesk.domain.customer.repository.CustomerRepository;
 import dev.langchain4j.data.document.Document;
-import dev.langchain4j.data.document.DocumentSplitter;
-import dev.langchain4j.data.document.parser.TextDocumentParser;
 import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
-import dev.langchain4j.data.document.splitter.DocumentBySentenceSplitter;
 import dev.langchain4j.model.Tokenizer;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
 import org.springframework.boot.CommandLineRunner;
@@ -20,7 +17,6 @@ import org.springframework.core.io.ResourceLoader;
 
 import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Collections;
 import java.util.List;
 
 import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocument;

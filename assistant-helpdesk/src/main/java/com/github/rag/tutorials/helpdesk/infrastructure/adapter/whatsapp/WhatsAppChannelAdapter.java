@@ -29,8 +29,8 @@ public class WhatsAppChannelAdapter implements ChannelAdapter<WhatsAppMessageReq
                         rawMessage.getToNumber(),
                         null);
             } catch (Exception e) {
-                log.error("Error parsing email message", e);
-                throw new RuntimeException("Failed to parse email", e);
+                log.error("Failed whatsapp handler message", e);
+                throw new RuntimeException("Failed whatsapp handler message", e);
             }
         }).subscribeOn(Schedulers.boundedElastic());
     }
