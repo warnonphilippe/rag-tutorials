@@ -45,7 +45,7 @@ public class ConversationState {
 
     public void clearData() {
         this.customerId = null;
-        this.customerCode = null;
+        this.customerCode = "";
         this.customerEmail = null;
         this.selectedContractNumber = null;
         this.issueType = null;
@@ -64,14 +64,13 @@ public class ConversationState {
         return (T) additionalData.get(key);
     }
 
-    // Metodi per la conversione tra Map e JSON
     @PrePersist
     @PreUpdate
     public void beforeSave() {
-        // Utilizzo di Jackson o Gson per convertire la mappa in JSON
         try {
-            com.fasterxml.jackson.databind.ObjectMapper mapper = new com.fasterxml.jackson.databind.ObjectMapper();
+            ObjectMapper mapper = new ObjectMapper();
             this.additionalDataJson = mapper.writeValueAsString(this.additionalData);
+            updateLastUpdated();
         } catch (Exception e) {
             this.additionalDataJson = "{}";
         }
@@ -79,7 +78,6 @@ public class ConversationState {
 
     @PostLoad
     public void afterLoad() {
-        // Utilizzo di Jackson o Gson per convertire il JSON in mappa
         try {
             ObjectMapper mapper = new ObjectMapper();
             if (this.additionalDataJson != null && !this.additionalDataJson.isEmpty()) {

@@ -12,7 +12,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
 
 import static com.github.rag.tutorials.helpdesk.domain.conversation.model.Stage.COMPLETED;
-import static com.github.rag.tutorials.helpdesk.domain.conversation.model.Stage.TICKET_CREATION;
 
 @Slf4j
 @Component
@@ -29,21 +28,26 @@ public class KnowledgeBaseSearchService {
                 state.getSelectedContractNumber(),
                 state.getIssueType()
         );
-        
+
         KnowledgeBaseResult result = knowledgeBaseResultResult.content();
         log.info("Knowledge base search result: {}", result);
-        if (result.isSolutionFound()) {
+        if (result.isCustomerSatisfiedWithTheSolution()) {
             log.debug("Solution found in the knowledge base");
             state.setCurrentStage(COMPLETED);
             state.setCompletionReason("SOLUTION_PROVIDED");
+            state.setRetryCount(0);
             stateRepository.save(state);
-            String msg = result.getMessage();
-            msg += "\n\n\nSolution found: \n\n\n" + result.getSolution();
-            return ResponseMessagePayload.createSimple(msg, message);
+            return ResponseMessagePayload.createSimple(result.getMessage(), message);
         }
-        log.debug("No solution found in the knowledge base, proceeding to ticket creation");
-        state.setCurrentStage(TICKET_CREATION);
+        log.debug("Solution not found in the knowledge base, asking for more information");
+        if (state.getRetryCount() >= 3) {
+            log.debug("Customer has already been asked for more information 2 times, proceeding to ticket creation");
+            state.setCompletionReason("NO_SOLUTION_FOUND");
+            stateRepository.save(state);
+            return ticketCreationService.handleTicketCreation(message, state);
+        }
+        state.setRetryCount(state.getRetryCount() + 1);
         stateRepository.save(state);
-        return ticketCreationService.handleTicketCreation(message, state);
+        return ResponseMessagePayload.createSimple(result.getMessage(), message);
     }
 }

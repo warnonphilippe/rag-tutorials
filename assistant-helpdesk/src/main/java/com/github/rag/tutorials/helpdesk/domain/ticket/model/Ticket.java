@@ -24,7 +24,7 @@ public class Ticket {
     private String contractNumber;
     @Column(nullable = false)
     private String issueType;
-    @Column(nullable = false)
+    @Column(nullable = false, columnDefinition = "TEXT")
     private String description;
     @Column(nullable = false)
     private String priority;

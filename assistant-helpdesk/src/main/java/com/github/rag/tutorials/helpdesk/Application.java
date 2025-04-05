@@ -6,8 +6,8 @@ import com.github.rag.tutorials.helpdesk.domain.customer.model.Customer;
 import com.github.rag.tutorials.helpdesk.domain.customer.repository.CustomerRepository;
 import dev.langchain4j.data.document.Document;
 import dev.langchain4j.data.document.parser.apache.pdfbox.ApachePdfBoxDocumentParser;
-import dev.langchain4j.model.Tokenizer;
 import dev.langchain4j.store.embedding.EmbeddingStoreIngestor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -21,6 +21,7 @@ import java.util.List;
 
 import static dev.langchain4j.data.document.loader.FileSystemDocumentLoader.loadDocument;
 
+@Slf4j
 @SpringBootApplication
 public class Application {
     public static void main(String[] args) {
@@ -31,11 +32,11 @@ public class Application {
     CommandLineRunner initData(CustomerRepository customerRepository, 
                                ContractRepository contractRepository,
                                EmbeddingStoreIngestor ingestor,
-                               ResourceLoader resourceLoader,
-                               Tokenizer tokenizer) {
+                               ResourceLoader resourceLoader) {
         return args -> {
-            List<String> documents = Arrays.asList("guida_smartpos.pdf", "guida-utilizzo-mobilepos.pdf");
+            List<String> documents = Arrays.asList("guida-smartpos.pdf", "guida-utilizzo-mobilepos.pdf");
             for (String document : documents) {
+                log.info("Loading document: {}", document);
                 Resource resource = resourceLoader.getResource("classpath:" +document);
                 Document doc = loadDocument(resource.getFile().toPath(), new ApachePdfBoxDocumentParser());
                 ingestor.ingest(doc);
@@ -64,7 +65,7 @@ public class Application {
                     .active(true)
                     .contractType("FULL")
                     .contractNumber("CONTRACT123")
-                    .description("Full contract for John Doe")
+                    .description("SmartPOS contract")
                     .startDate(LocalDate.now())
                     .endDate(LocalDate.now().plusYears(1))
                     .build();

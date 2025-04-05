@@ -41,14 +41,12 @@ public class ConversationService {
             case CONTRACT_VERIFICATION:
                 return contractVerificationService.handleContractVerification(message, state);
             case ISSUE_CLASSIFICATION:
+            case COMPLETED:
                 return issueClassificationService.handleIssueClassification(message, state);
             case KNOWLEDGE_BASE_SEARCH:
                 return knowledgeBaseSearchService.handleKnowledgeBaseSearch(message, state);
             case TICKET_CREATION:
                 return ticketCreationService.handleTicketCreation(message, state);
-            case COMPLETED:
-                log.debug("Conversation already completed, no further processing needed.");
-                return ResponseMessagePayload.createSimple("Conversation already completed.", message);
             default:
                 state.setCurrentStage(Stage.AUTHENTICATION);
                 state.clearData();
@@ -68,6 +66,7 @@ public class ConversationService {
         state.setId(getSessionId(message));
         state.setChannel(message.getChannel());
         state.setCurrentStage(Stage.AUTHENTICATION);
+        state.setCustomerCode("");
         return conversationStateRepository.save(state);
     }
 

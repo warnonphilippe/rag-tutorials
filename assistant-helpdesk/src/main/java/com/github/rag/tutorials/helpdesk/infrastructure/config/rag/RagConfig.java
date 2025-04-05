@@ -4,6 +4,7 @@ import com.github.rag.tutorials.helpdesk.infrastructure.rag.agent.*;
 import com.github.rag.tutorials.helpdesk.infrastructure.rag.store.JpaConversationMemoryStore;
 import com.github.rag.tutorials.helpdesk.infrastructure.rag.tool.CustomerIdentificationTool;
 import dev.langchain4j.data.document.DocumentSplitter;
+import dev.langchain4j.data.document.splitter.DocumentByParagraphSplitter;
 import dev.langchain4j.data.document.splitter.DocumentBySentenceSplitter;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.ChatMemory;
@@ -55,8 +56,7 @@ public class RagConfig {
     EmbeddingStoreIngestor embeddingStoreIngestor(EmbeddingStore<TextSegment> embeddingStore,
                                                   Tokenizer tokenizer,
                                                   EmbeddingModel embeddingModel) {
-        DocumentSplitter documentSplitter = new DocumentBySentenceSplitter(100,
-                10, tokenizer);
+        DocumentSplitter documentSplitter = new DocumentBySentenceSplitter(250, 50, tokenizer);
         return EmbeddingStoreIngestor.builder()
                 .documentSplitter(documentSplitter)
                 .embeddingModel(embeddingModel)

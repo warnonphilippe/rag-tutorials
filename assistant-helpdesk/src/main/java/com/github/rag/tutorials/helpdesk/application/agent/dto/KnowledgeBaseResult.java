@@ -10,31 +10,16 @@ import lombok.Data;
 @Builder
 public class KnowledgeBaseResult {
     private final boolean solutionFound;
-    private final String solution;
+    private final boolean customerSatisfiedWithTheSolution;
     private final String message;
 
     @JsonCreator
     public KnowledgeBaseResult(
             @JsonProperty("solutionFound") boolean solutionFound,
-            @JsonProperty("solution") String solution,
+            @JsonProperty("customerSatisfiedWithTheSolution") boolean customerSatisfiedWithTheSolution,
             @JsonProperty("message") String message) {
         this.solutionFound = solutionFound;
-        this.solution = solution;
+        this.customerSatisfiedWithTheSolution = customerSatisfiedWithTheSolution;
         this.message = message;
-    }
-
-    public static KnowledgeBaseResult solutionFound(String solution, String message) {
-        return KnowledgeBaseResult.builder()
-                .solutionFound(true)
-                .solution(solution)
-                .message(message)
-                .build();
-    }
-
-    public static KnowledgeBaseResult noSolutionFound(String message) {
-        return KnowledgeBaseResult.builder()
-                .solutionFound(false)
-                .message(message)
-                .build();
     }
 }

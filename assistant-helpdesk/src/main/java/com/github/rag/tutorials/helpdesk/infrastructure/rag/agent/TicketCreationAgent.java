@@ -16,6 +16,9 @@ public interface TicketCreationAgent {
             1. The priority of the ticket (HIGH, MEDIUM, or LOW)
             2. A clear and concise description of the problem
             3. The necessary details for the support team
+            4. A message to show the user confirming the ticket creation and the next steps
+            5. in the message to the customer, do not include any kind of information about when the problems will be resolved.
+            6. in the message include a brief description of the problem.
             
             Priorities are defined as follows:
             - HIGH: blocking issues that prevent the use of the service or product
