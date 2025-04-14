@@ -23,7 +23,7 @@ mvn clean install
 ## Step 2: Environment setup
 
 ```bash
-export CLAUDE_API_KEYP=YOUR_CLAUDE_API_KEY
+export CLAUDE_API_KEY=YOUR_CLAUDE_API_KEY
 ```
 
 ## Step 3: Run the application
