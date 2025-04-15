@@ -14,8 +14,6 @@ import org.springframework.stereotype.Component;
 
 import java.util.UUID;
 
-import static com.github.rag.tutorials.helpdesk.domain.conversation.model.Stage.COMPLETED;
-
 @Slf4j
 @Component
 @RequiredArgsConstructor
@@ -29,17 +27,17 @@ public class TicketCreationService {
                 message.getText(),
                 state.getCustomerCode(),
                 state.getSelectedContractNumber(),
-                state.getIssueType()
+                state.getIssueType().toString()
         );
-        log.info("Ticket creation result: {}", ticketCreationResult);
         TicketCreationResult result = ticketCreationResult.content();
+        log.info("Ticket creation result: {}", result);
 
         UUID ticketId = doNewTicketService.newTicket(result, state);
-        state.setCurrentStage(COMPLETED);
-        state.setCompletionReason("TICKET_CREATED");
         state.setTicketId(ticketId);
         stateRepository.save(state);
 
-        return ResponseMessagePayload.createWithTicket(result.getMessage(), message, ticketId.toString());
+        String messageResponse = result.getMessage() + "\n" +
+                                 "Ticket ID: " + ticketId.toString();
+        return ResponseMessagePayload.createWithTicket(messageResponse, message, ticketId.toString());
     }
 }

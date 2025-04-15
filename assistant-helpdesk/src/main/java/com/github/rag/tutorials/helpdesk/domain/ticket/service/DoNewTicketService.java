@@ -16,10 +16,10 @@ public class DoNewTicketService {
     public UUID newTicket(TicketCreationResult ticketResult, ConversationState conversationState) {
         Ticket ticket = Ticket.builder()
                 .customerId(conversationState.getCustomerId().toString())
-                .issueType(conversationState.getIssueType())
+                .issueType(conversationState.getIssueType().toString())
                 .contractNumber(conversationState.getSelectedContractNumber())
                 .priority(ticketResult.getPriority())
-                .description(ticketResult.getMessage())
+                .description(ticketResult.getDescription())
                 .build();
         Ticket save = ticketRepository.save(ticket);
         return save.getId();

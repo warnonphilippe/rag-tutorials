@@ -1,6 +1,7 @@
 package com.github.rag.tutorials.helpdesk.domain.conversation.service;
 
 import com.github.rag.tutorials.helpdesk.application.agent.*;
+import com.github.rag.tutorials.helpdesk.application.agent.dto.SupervisorResult;
 import com.github.rag.tutorials.helpdesk.domain.conversation.model.ConversationState;
 import com.github.rag.tutorials.helpdesk.domain.conversation.model.RequestMessagePayload;
 import com.github.rag.tutorials.helpdesk.domain.conversation.model.ResponseMessagePayload;
@@ -19,6 +20,7 @@ import java.util.Optional;
 @RequiredArgsConstructor
 public class ConversationService {
 
+    private final StatefulSupervisorService statefulSupervisorService;
     private final AuthenticationService authenticationService;
     private final ContractVerificationService contractVerificationService;
     private final IssueClassificationService issueClassificationService;
@@ -35,24 +37,21 @@ public class ConversationService {
 
     private ResponseMessagePayload processMessageInternal(RequestMessagePayload message) {
         ConversationState state = getOrCreateConversationState(message);
-        switch (state.getCurrentStage()) {
-            case AUTHENTICATION:
-                return authenticationService.handleAuthentication(message, state);
-            case CONTRACT_VERIFICATION:
-                return contractVerificationService.handleContractVerification(message, state);
-            case ISSUE_CLASSIFICATION:
-            case COMPLETED:
-                return issueClassificationService.handleIssueClassification(message, state);
-            case KNOWLEDGE_BASE_SEARCH:
-                return knowledgeBaseSearchService.handleKnowledgeBaseSearch(message, state);
-            case TICKET_CREATION:
-                return ticketCreationService.handleTicketCreation(message, state);
-            default:
-                state.setCurrentStage(Stage.AUTHENTICATION);
-                state.clearData();
-                conversationStateRepository.save(state);
-                return authenticationService.handleAuthentication(message, state);
-        }
+        log.debug("Current state: {}", state);
+        log.debug("Current stage: {}", state.getCurrentStage());
+        log.debug("Message text: {}", message.getText());
+        SupervisorResult supervisorResult = statefulSupervisorService.handleStatefulSupervisor(message, state);
+        log.debug("Supervisor result: {}", supervisorResult);
+        state.setCurrentStage(supervisorResult.getNextStage());
+        conversationStateRepository.save(state);
+        return switch (supervisorResult.getNextStage()) {
+            case AUTHENTICATION -> authenticationService.handleAuthentication(message, state);
+            case CONTRACT_VERIFICATION -> contractVerificationService.handleContractVerification(message, state);
+            case ISSUE_CLASSIFICATION -> issueClassificationService.handleIssueClassification(message, state);
+            case KNOWLEDGE_BASE_SEARCH -> knowledgeBaseSearchService.handleKnowledgeBaseSearch(message, state);
+            case TICKET_CREATION -> ticketCreationService.handleTicketCreation(message, state);
+            case COMPLETED -> ResponseMessagePayload.createSimple(supervisorResult.getResponseMessage(), message);
+        };
     }
 
     private ConversationState getOrCreateConversationState(RequestMessagePayload message) {

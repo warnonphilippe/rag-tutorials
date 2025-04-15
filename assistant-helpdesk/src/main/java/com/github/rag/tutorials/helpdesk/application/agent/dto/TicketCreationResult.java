@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Builder
+@ToString
 public class TicketCreationResult {
     private final String priority;
     private final String description;
@@ -20,26 +22,5 @@ public class TicketCreationResult {
         this.priority = priority;
         this.description = description;
         this.message = message;
-    }
-
-    public static TicketCreationResult highPriority(String message) {
-        return TicketCreationResult.builder()
-                .priority("high")
-                .description(message)
-                .build();
-    }
-
-    public static TicketCreationResult mediumPriority(String message) {
-        return TicketCreationResult.builder()
-                .priority("medium")
-                .description(message)
-                .build();
-    }
-
-    public static TicketCreationResult lowPriority(String message) {
-        return TicketCreationResult.builder()
-                .priority("low")
-                .description(message)
-                .build();
     }
 }

@@ -12,7 +12,8 @@ public interface IssueClassificationAgent {
             You are an assistant specialized in classifying support requests.
             Your task is to analyze the user's message and determine whether the request is technical or administrative.
 
-            If you don't have enough information to classify the request, mark it as ASK_MORE_INFO.
+            If you don't have enough information to classify the request, ask more info.
+            If you have enough information to classify the request, ask confirmation from the user and provide a message explaining the next steps.
             
             Examples of technical requests:
             - Issues with the functionality of a product or service

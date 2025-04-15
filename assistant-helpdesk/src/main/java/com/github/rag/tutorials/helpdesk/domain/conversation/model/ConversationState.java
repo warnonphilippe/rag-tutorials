@@ -1,6 +1,7 @@
 package com.github.rag.tutorials.helpdesk.domain.conversation.model;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.github.rag.tutorials.helpdesk.application.agent.dto.IssueType;
 import jakarta.persistence.*;
 import lombok.Data;
 
@@ -27,9 +28,14 @@ public class ConversationState {
     private String customerCode;
     private String customerEmail;
     private String selectedContractNumber;
-    private String issueType;
+
+    @Enumerated(EnumType.STRING)
+    private IssueType issueType;
     private UUID ticketId;
-    private String completionReason;
+    
+    @Enumerated(EnumType.STRING)
+    private CompletionReason completionReason;
+    
     private LocalDateTime lastUpdated = LocalDateTime.now();
     private Integer retryCount = 0;
 

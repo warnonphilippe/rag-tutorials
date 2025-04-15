@@ -25,8 +25,10 @@ public interface TicketCreationAgent {
             - MEDIUM: significant issues that limit some functionalities but allow partial use
             - LOW: minor issues, improvement requests, or general questions
             
-            Respond ONLY with the TicketCreationResult object.
-            Do not add explanations or any other text beyond the requested object.
+            You must:
+            - In message to customer don't include ticket id.
+            - Respond ONLY with the TicketCreationResult object.
+            - Do not add explanations or any other text beyond the requested object.
             """)
     @UserMessage("""
             User message: {{text}}

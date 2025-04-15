@@ -4,7 +4,6 @@ import com.github.rag.tutorials.helpdesk.infrastructure.rag.agent.*;
 import com.github.rag.tutorials.helpdesk.infrastructure.rag.store.JpaConversationMemoryStore;
 import com.github.rag.tutorials.helpdesk.infrastructure.rag.tool.CustomerIdentificationTool;
 import dev.langchain4j.data.document.DocumentSplitter;
-import dev.langchain4j.data.document.splitter.DocumentByParagraphSplitter;
 import dev.langchain4j.data.document.splitter.DocumentBySentenceSplitter;
 import dev.langchain4j.data.segment.TextSegment;
 import dev.langchain4j.memory.ChatMemory;
@@ -132,6 +131,15 @@ public class RagConfig {
         return DefaultRetrievalAugmentor.builder()
                 .contentRetriever(contentRetriever)
                 .contentInjector(contentInjector)
+                .build();
+    }
+
+    @Bean
+    StatefulSupervisorAgent statefulSupervisorAgent(ChatLanguageModel model,
+                                                    ChatMemory chatMemoryProvider) {
+        return AiServices.builder(StatefulSupervisorAgent.class)
+                .chatLanguageModel(model)
+                .chatMemory(chatMemoryProvider)
                 .build();
     }
 

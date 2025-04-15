@@ -4,9 +4,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
 import lombok.Data;
+import lombok.ToString;
 
 @Data
 @Builder
+@ToString
 public class IssueClassificationResult {
     private final String issueType;
     private final boolean technicalIssue;
@@ -23,33 +25,5 @@ public class IssueClassificationResult {
         this.technicalIssue = technicalIssue;
         this.administrativeIssue = administrativeIssue;
         this.message = message;
-    }
-
-    // Metodi factory per scenari comuni
-    public static IssueClassificationResult technical(String message) {
-        return IssueClassificationResult.builder()
-                .issueType("TECHNICAL")
-                .technicalIssue(true)
-                .administrativeIssue(false)
-                .message(message)
-                .build();
-    }
-
-    public static IssueClassificationResult administrative(String message) {
-        return IssueClassificationResult.builder()
-                .issueType("ADMINISTRATIVE")
-                .technicalIssue(false)
-                .administrativeIssue(true)
-                .message(message)
-                .build();
-    }
-
-    public static IssueClassificationResult unknown(String message) {
-        return IssueClassificationResult.builder()
-                .issueType("UNKNOWN")
-                .technicalIssue(false)
-                .administrativeIssue(false)
-                .message(message)
-                .build();
     }
 }
