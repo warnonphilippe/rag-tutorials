@@ -11,7 +11,7 @@ This tutorial will guide you through the process of creating a chatbot hair book
 ## Step 1: Clone repository
 Clone the repository using the following command:
 ```bash
-git clone https://github.com/rag-tutorials.git
+git clone https://github.com/giuseppe-trisciuoglio/rag-tutorials.git
 ```
 ```bash
 cd chatbot-hair-booking-system
@@ -23,7 +23,7 @@ mvn clean install
 ## Step 2: Environment setup
 
 ```bash
-export CLAUDE_API_KEYP=YOUR_CLAUDE_API_KEY
+export CLAUDE_API_KEY=YOUR_CLAUDE_API_KEY
 ```
 
 ## Step 3: Run the application
