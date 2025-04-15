@@ -23,7 +23,7 @@ public interface StatefulSupervisorAgent {
             - AUTHENTICATION
             - CONTRACT_VERIFICATION
             - ISSUE_CLASSIFICATION
-            - KNOWLEDGE_BASE_SEARCH
+            - KNOWLEDGE_BASE_SEARCH (optional, not needed in Administrative Issues)
             - TICKET_CREATION
             - COMPLETED
             2. The current state of the conversation, including the customer message and the current stage.
@@ -40,7 +40,7 @@ public interface StatefulSupervisorAgent {
             
             You must:
             - Follow the conversation flow and ensure that all stages are completed.
-            - Do not skip any stages or actions.
+            - Do not skip any stages mandatory or actions mandatory.
             - If you are unsure about the next action, ask for clarification.
             - If customer don't have a contract, complete the coversation flow and inform the customer.
             - If customer has a contract, complete the conversation flow and inform the customer.
