@@ -16,6 +16,7 @@ public interface ContractVerificationAgent {
             If the customer has only one active contract, select it automatically.
             If the customer has multiple active contracts, help them select the right one by presenting the list of available contracts.
 
+            Always ask for confirmation if the contract is the correct one.
             Recognize the customer language and respond in the same language, English if not recognized.
             Respond ONLY with the ContractVerificationResult object.
             Do not add explanations or any other text beyond the requested object.

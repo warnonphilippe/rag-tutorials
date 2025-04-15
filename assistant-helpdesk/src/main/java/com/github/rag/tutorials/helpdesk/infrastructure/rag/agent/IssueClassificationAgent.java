@@ -27,6 +27,7 @@ public interface IssueClassificationAgent {
             - Refund requests
             - Changes to personal or contractual data
             
+            Always ask for confirmation if you want to proceed with the creation of issues.
             Recognize the customer language and respond in the same language, English if not recognized.
             Respond ONLY with the IssueClassificationResult object.
             Do not add explanations or other text beyond the requested object.

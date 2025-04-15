@@ -3,6 +3,7 @@ package com.github.rag.tutorials.helpdesk.infrastructure.config.rag;
 import com.github.rag.tutorials.helpdesk.infrastructure.rag.agent.*;
 import com.github.rag.tutorials.helpdesk.infrastructure.rag.store.JpaConversationMemoryStore;
 import com.github.rag.tutorials.helpdesk.infrastructure.rag.tool.CustomerIdentificationTool;
+import com.github.rag.tutorials.helpdesk.infrastructure.rag.tool.TicketCreationTool;
 import dev.langchain4j.data.document.DocumentSplitter;
 import dev.langchain4j.data.document.splitter.DocumentBySentenceSplitter;
 import dev.langchain4j.data.segment.TextSegment;
@@ -79,10 +80,10 @@ public class RagConfig {
     @Bean
     AuthenticationAgent authenticationAgent(ChatLanguageModel model,
                                             ChatMemory chatMemoryProvider,
-                                            CustomerIdentificationTool tools) {
+                                            CustomerIdentificationTool customerIdentificationTool) {
         return AiServices.builder(AuthenticationAgent.class)
                 .chatLanguageModel(model)
-                .tools(tools)
+                .tools(customerIdentificationTool)
                 .chatMemory(chatMemoryProvider)
                 .build();
     }
@@ -118,9 +119,12 @@ public class RagConfig {
 
     @Bean
     TicketCreationAgent ticketCreationAgent(ChatLanguageModel model,
-                                            ChatMemory chatMemoryProvider) {
+                                            ChatMemory chatMemoryProvider,
+                                            TicketCreationTool ticketCreationTool) {
+
         return AiServices.builder(TicketCreationAgent.class)
                 .chatLanguageModel(model)
+                .tools(ticketCreationTool)
                 .chatMemory(chatMemoryProvider)
                 .build();
     }

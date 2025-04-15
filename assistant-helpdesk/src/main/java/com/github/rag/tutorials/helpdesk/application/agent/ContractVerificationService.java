@@ -40,12 +40,10 @@ public class ContractVerificationService {
                 state.getCurrentStage().toString(),
                 contracts
         );
-        log.debug("Contract verification result: {}", contractVerificationResultResult);
         ContractVerificationResult result = contractVerificationResultResult.content();
+        log.info("Contract verification result: {}", result);
         state.setSelectedContractNumber(result.getSelectedContractNumber());
         stateRepository.save(state);
-        log.debug("No contract selected");
-        log.debug("Retrying contract verification");
         log.debug("AI Assistant message: {}", message.getText());
         return ResponseMessagePayload.createSimple(result.getMessage(), message);
     }
