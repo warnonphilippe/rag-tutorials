@@ -17,13 +17,10 @@ public class ConversationState {
 
     @Id
     private String id;
-
     @Enumerated(EnumType.STRING)
     private Channel channel;
-
     @Enumerated(EnumType.STRING)
     private Stage currentStage;
-
     private UUID customerId;
     private String customerCode;
     private String customerEmail;
@@ -37,7 +34,6 @@ public class ConversationState {
     private CompletionReason completionReason;
     
     private LocalDateTime lastUpdated = LocalDateTime.now();
-    private Integer retryCount = 0;
 
     @Column(columnDefinition = "TEXT")
     private String additionalDataJson;

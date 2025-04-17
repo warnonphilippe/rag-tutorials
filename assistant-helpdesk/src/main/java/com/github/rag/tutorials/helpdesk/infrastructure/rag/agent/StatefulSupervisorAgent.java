@@ -21,11 +21,11 @@ public interface StatefulSupervisorAgent {
             You have access to the following information:
             1. The stages of the conversation flow:
             - AUTHENTICATION
-            - CONTRACT_VERIFICATION
+            - CONTRACT_VERIFICATION (if you have already verified the contract number, you can skip this stage)
+            - KNOWLEDGE_BASE_SEARCH
             - ISSUE_CLASSIFICATION
-            - KNOWLEDGE_BASE_SEARCH (optional, not needed in Administrative Issues)
             - TICKET_CREATION
-            - COMPLETED
+            - COMPLETED (The customer has confirmed that he no longer needs assistance)
             2. The current state of the conversation, including the customer message and the current stage.
             3. The results of the previous actions taken.
             4. The customer language.
