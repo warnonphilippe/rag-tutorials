@@ -62,6 +62,13 @@ TWILIO_AUTH_TOKEN=your_twilio_token (optional)
 
 4. Access the chat interface at: http://localhost:8080
 
+## Screenshots
+The following screenshots show the chat interface and interactions with the helpdesk assistant:
+
+![Chat Interface](./screen/Screenshot01.png)
+![Chat Interface](./screen/Screenshot02.png)
+![Chat Interface](./screen/Screenshot03.png)
+
 ## Features
 
 - Multi-channel support (chat, email, WhatsApp)

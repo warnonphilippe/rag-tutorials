@@ -29,10 +29,6 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class RagConfig {
-    @Bean
-    Tokenizer tokenizer() {
-        return new HuggingFaceTokenizer();
-    }
 
     @Bean
     ChatMemory chatMemory(JpaConversationMemoryStore jpaConversationMemoryStore) {
@@ -40,6 +36,11 @@ public class RagConfig {
                 .chatMemoryStore(jpaConversationMemoryStore)
                 .maxMessages(15)
                 .build();
+    }
+
+    @Bean
+    Tokenizer tokenizer() {
+        return new HuggingFaceTokenizer();
     }
 
     @Bean
@@ -73,6 +74,22 @@ public class RagConfig {
                 .embeddingModel(embeddingModel)
                 .maxResults(maxResults)
                 .minScore(minScore)
+                .build();
+    }
+
+    @Bean
+    RetrievalAugmentor retrievalAugmentor(ContentRetriever contentRetriever,
+                                          ContentInjector contentInjector) {
+        return DefaultRetrievalAugmentor.builder()
+                .contentRetriever(contentRetriever)
+                .contentInjector(contentInjector)
+                .build();
+    }
+
+    @Bean
+    ContentInjector contentInjector() {
+        return DefaultContentInjector.builder()
+                .metadataKeysToInclude(java.util.Arrays.asList("source", "relevance", "language"))
                 .build();
     }
 
@@ -130,15 +147,6 @@ public class RagConfig {
     }
 
     @Bean
-    RetrievalAugmentor retrievalAugmentor(ContentRetriever contentRetriever,
-                                          ContentInjector contentInjector) {
-        return DefaultRetrievalAugmentor.builder()
-                .contentRetriever(contentRetriever)
-                .contentInjector(contentInjector)
-                .build();
-    }
-
-    @Bean
     StatefulSupervisorAgent statefulSupervisorAgent(ChatLanguageModel model,
                                                     ChatMemory chatMemoryProvider) {
         return AiServices.builder(StatefulSupervisorAgent.class)
@@ -146,11 +154,5 @@ public class RagConfig {
                 .chatMemory(chatMemoryProvider)
                 .build();
     }
-
-    @Bean
-    ContentInjector contentInjector() {
-        return DefaultContentInjector.builder()
-                .metadataKeysToInclude(java.util.Arrays.asList("source", "relevance", "language"))
-                .build();
-    }
+    
 }

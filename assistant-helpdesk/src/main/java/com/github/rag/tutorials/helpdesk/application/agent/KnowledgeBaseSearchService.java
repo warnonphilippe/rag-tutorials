@@ -16,11 +16,12 @@ import org.springframework.stereotype.Component;
 public class KnowledgeBaseSearchService {
     private final KnowledgeBaseAgent knowledgeBaseAgent;
     public ResponseMessagePayload handleKnowledgeBaseSearch(RequestMessagePayload message, ConversationState state) {
+        String issueType = state.getIssueType() != null ? state.getIssueType().toString() : "";
         Result<KnowledgeBaseResult> knowledgeBaseResultResult = knowledgeBaseAgent.searchKnowledgeBase(
                 message.getText(),
                 state.getCustomerCode(),
                 state.getSelectedContractNumber(),
-                state.getIssueType().toString()
+                issueType
         );
 
         KnowledgeBaseResult result = knowledgeBaseResultResult.content();
